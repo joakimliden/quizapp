@@ -17,8 +17,8 @@ app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
 });
 
-app.get("/api/city", (req, res, next) => {
-    var sql = "select * from city"
+app.get("/api/users", (req, res, next) => {
+    var sql = "select * from users"
     var params = []
     db.all(sql, params, (err, rows) => {
         if (err) {
@@ -27,14 +27,14 @@ app.get("/api/city", (req, res, next) => {
         }
         res.json({
             "message":"success",
-            "city":rows
+            "user":rows
         })
       });
 });
 
 
-app.get("/api/city/:id", (req, res, next) => {
-    var sql = "select * from city where cityId = ?"
+app.get("/api/users/:id", (req, res, next) => {
+    var sql = "select * from users where userId = ?"
     var params = [req.params.id]
     db.get(sql, params, (err, row) => {
         if (err) {
@@ -43,23 +43,23 @@ app.get("/api/city/:id", (req, res, next) => {
         }
         res.json({
             "message":"success",
-            "city":row
+            "user":row
         })
       });
 });
 
 
-app.post("/api/city/", (req, res, next) => {
+app.post("/api/users/", (req, res, next) => {
     var errors=[]
-    if (!req.body.cityPopulation){
-        errors.push("No info about population");
+    if (!req.body.highScore){
+        errors.push("No info about HighScore");
     }
     var data = {
-        cityName: req.body.cityName,
-        cityPopulation: req.body.cityPopulation
+        userName: req.body.userName,
+        highScore: req.body.highScore
     }
-    var sql ='INSERT INTO city (cityName, cityPopulation) VALUES (?,?)'
-    var params =[data.cityName, data.cityPopulation]
+    var sql ='INSERT INTO users (userName, highScore) VALUES (?,?)'
+    var params =[data.userName, data.highScore]
     db.run(sql, params, function (err, result) {
         if (err){
             res.status(400).json({"error": err.message})
@@ -67,19 +67,19 @@ app.post("/api/city/", (req, res, next) => {
         }
         res.json({
             "message": "success",
-            "city": data,
+            "user": data,
             "id" : this.lastID
         })
     });
 })
 
-app.put("/api/city/:id", (req, res, next) => {
+app.put("/api/users/:id", (req, res, next) => {
     var data = {
-        cityName: req.body.cityName,
-        cityPopulation: req.body.cityPopulation
+        userName: req.body.userName,
+        highScore: req.body.highScore
     }
-    var sql ='UPDATE city SET cityName = ?, cityPopulation = ? WHERE cityId = ?'
-    var params =[data.cityName, data.cityPopulation, req.params.id]
+    var sql ='UPDATE users SET userName = ?, highScore = ? WHERE userId = ?'
+    var params =[data.userName, data.highScore, req.params.id]
     db.run(sql, params, function (err, result) {
         if (err){
             res.status(400).json({"error": err.message})
@@ -87,15 +87,15 @@ app.put("/api/city/:id", (req, res, next) => {
         }
         res.json({
             "message": "success",
-            "city": data,
+            "user": data,
             "id" : this.lastID
         })
     });
 })
 
-app.delete("/api/city/:id", (req, res, next) => {
+app.delete("/api/users/:id", (req, res, next) => {
     db.run(
-        'DELETE FROM city WHERE cityId = ?',
+        'DELETE FROM users WHERE Id = ?',
         req.params.id,
         function (err, result) {
             if (err){
@@ -111,7 +111,7 @@ app.delete("/api/city/:id", (req, res, next) => {
 
 
 
-app.post("/api/city/user", (req, res, next) => {
+app.post("/api/users/", (req, res, next) => {
     var errors=[]
     if (!req.body.users){
         errors.push("No info about users");
@@ -119,7 +119,7 @@ app.post("/api/city/user", (req, res, next) => {
     var data = {
         users: req.body.users
     }
-    var sql ='INSERT INTO city (users) VALUES (?)'
+    var sql ='INSERT INTO users (userName, highScore) VALUES (?,?)'
     var params =[data.users]
     db.run(sql, params, function (err, result) {
         if (err){

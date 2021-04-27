@@ -1,12 +1,12 @@
-const elForm = document.getElementById('formCity');
-const elCityName = document.getElementById('cityName');
-const elCityPopulation = document.getElementById('cityPopulation');
+const elForm = document.getElementById('formUsers');
+const elUserName = document.getElementById('userName');
+const elHighScore = document.getElementById('highScore');
 const elOutput = document.getElementById('output');
 
-function newCity(event){
+function newUser(event){
     event.preventDefault();
-    let cityName = elCityName.value;
-    let cityPopulation = elCityPopulation.value;
+    let userName = elUserName.value;
+    let highScore = elHighScore.value;
 
 // Example POST method implementation:
 async function postData(url = '', data = {}) {
@@ -22,19 +22,19 @@ async function postData(url = '', data = {}) {
         },
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer', // no-referrer, *client
-        body: JSON.stringify({cityName:cityName, cityPopulation:cityPopulation}) // body data type must match "Content-Type" header
+        body: JSON.stringify({userName:userName, highScore:highScore}) // body data type must match "Content-Type" header
     });
     return response.json(); // parses JSON response into native JavaScript objects
 }
 
-postData('http://127.0.0.1:3000/api/city/')
+postData('http://127.0.0.1:8080/api/users/')
     .then((data) => {
         console.log(data); // JSON data parsed by `response.json()` call
     });
 
 }
 
-elForm.addEventListener('submit', newCity, false);
+elForm.addEventListener('submit', newUser, false);
 
 /*
 https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch

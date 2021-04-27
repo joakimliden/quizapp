@@ -7,7 +7,7 @@
 <body>
 <div id="root">
     <ul>
-        <li v-for="city in cities">{{ city.cityName }} {{ city.cityPopulation }}</li>
+        <li v-for="user in users">{{ users.userName }} {{ users.highScore }}</li>
     </ul>
 
 </div>
@@ -17,16 +17,16 @@
     var app = new Vue({
         el: '#root',
         data: {
-            cities: []
+            users: []
         },
         mounted(){
-            fetch('http://127.0.0.1:3000/api/city/')
+            fetch('http://127.0.0.1:8080/api/users/')
                 .then((response) => {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log(data.city);
-                    this.cities = data.city;
+                    console.log(data.user);
+                    this.cities = data.user;
                 });
         }
     })
