@@ -109,18 +109,35 @@ app.delete("/api/city/:id", (req, res, next) => {
 
 
 
+/* TEST USER DB (ADD/POST and GET */
+app.get("/api/user", (req, res, next) => {
+    var sql = "select * from user"
+    var params = []
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+            res.status(400).json({"error":err.message});
+            return;
+        }
+        res.json({
+            "message":"success",
+            "user":rows
+        })
+    });
+});
 
-
-app.post("/api/city/user", (req, res, next) => {
+app.post("/api/user/", (req, res, next) => {
     var errors=[]
-    if (!req.body.users){
-        errors.push("No info about users");
+    if (!req.body.userName){
+        errors.push("No info about user");
     }
     var data = {
-        users: req.body.users
+        userName: req.body.userName,
+        highScore:req.body.highScore
     }
-    var sql ='INSERT INTO city (users) VALUES (?)'
-    var params =[data.users]
+    var sql ='INSERT INTO user (userName, highScore) VALUES (?, ?)'
+    var params =[data.userName, data.highScore]
+
+    // TODO: sätta db.run i en if-sats, ifall userName redan finns?
     db.run(sql, params, function (err, result) {
         if (err){
             res.status(400).json({"error": err.message})
@@ -128,7 +145,8 @@ app.post("/api/city/user", (req, res, next) => {
         }
         res.json({
             "message": "success",
-            "users": data
+            "user": data,
+            "id" : this.lastUserID
         })
     });
 })

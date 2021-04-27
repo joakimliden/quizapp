@@ -6,7 +6,19 @@
       <button v-else class="btn btn-red-user" @click="changeUserState('default')">Back</button>
 
       <div v-if="userState === 'edit'">
-        <form v-on:submit.prevent="addUser">
+        <form method="POST" id="formUser" class="new-user">
+          <p>
+            <input type="text" id="userName" name="userName">
+            <input
+                type="submit"
+                class="btn btn-primary"
+                value="Add"
+                placeholder="New User"
+            >
+          </p>
+        </form>
+
+<!--        <form v-on:submit.prevent="addUser">
           <div class="new-user">
             <input
                 v-model="newUserName"
@@ -14,7 +26,7 @@
             >
             <button class="btn btn-primary">Add</button>
           </div>
-        </form>
+        </form>-->
 
 <!--        <ul class="user-list">
           <li
@@ -46,6 +58,7 @@
   </div>
 </template>
 
+<script src="js/fetch-city-user-post.js"></script>
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
@@ -96,7 +109,7 @@ export default {
 
 .new-user {
   position: absolute;
-  top: 0;
+  top: -16px;
   right: 60px;
 }
 </style>
