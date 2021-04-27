@@ -1,10 +1,12 @@
 const elForm = document.getElementById('formUser');
 const elUserName = document.getElementById('userName');
 const elOutput = document.getElementById('output')
+// const elHighScore = document.getElementById('highScore')
 
 function newUser(event){
     event.preventDefault();
     let userName = elUserName.value;
+    // let highScore = elHighScore.value;
 
     // TODO: sätta postData i en if-sats, ifall userName redan finns?
 
@@ -24,7 +26,7 @@ function newUser(event){
         });
         return response.json(); // parses JSON response into native JavaScript objects
     }
-    postData('http://127.0.0.1:8080/api/user/')
+    postData('http://127.0.0.1:3000/api/user/')
         .then((data) => {
             console.log(data); // JSON data parsed by `response.json()` call
         });

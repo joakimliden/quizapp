@@ -110,7 +110,7 @@ app.delete("/api/city/:id", (req, res, next) => {
 
 
 /* TEST USER DB (ADD/POST and GET */
-app.get("/api/user", (req, res, next) => {
+app.get("/api/user/", (req, res, next) => {
     var sql = "select * from user"
     var params = []
     db.all(sql, params, (err, rows) => {
