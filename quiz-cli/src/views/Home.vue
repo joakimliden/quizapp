@@ -1,44 +1,21 @@
 <template>
   <div class="home">
-
     <header>
       <button v-if="userState === 'default'" class="btn btn-primary-user" @click="changeUserState('edit')">Users</button>
       <button v-else class="btn btn-red-user" @click="changeUserState('default')">Back</button>
-
       <div v-if="userState === 'edit'">
-        <form method="POST" id="formUser" class="new-user">
-          <div>
-            <input type="text" id="userName" name="userName" v-model="formData.userName">
-            <input
-                type="submit"
-                class="btn btn-primary"
-                value="Add"
-                placeholder="New User"
+        <form method="POST" id="formUser" class="new-user" @submit.prevent="postData('http://127.0.0.1:3000/api/users')">
+        <div>
+        <input type="text" id="userName" name="userName" v-model="formData.userName">
+          <input
+            type="submit"
+            class="btn btn-primary"
+            value="Add"
+            placeholder="New User"
             >
+       </div>
+         </form>
           </div>
-        </form>
-
-<!--        <form v-on:submit.prevent="addUser">
-          <div class="new-user">
-            <input
-                v-model="newUserName"
-                placeholder="New User"
-            >
-            <button class="btn btn-primary">Add</button>
-          </div>
-        </form>-->
-
-<!--        <ul class="user-list">
-          <li
-              v-for="author in authors"
-              @click="setAuthor(author)"
-              :class="[author.active ? 'active' : '']"
-          >
-            {{ author.name }}
-          </li>
-        </ul>-->
-      </div>
-
     </header>
 
     <img class="home-img" alt="City Quiz" src="../assets/city-quiz.jpg">
@@ -71,8 +48,7 @@ export default {
     const requestOptions = {
       method: "POST",
       headers: {
-      //  "Content-Type": "application/json"
-        'Content-Type': 'application/x-www-form-urlencoded'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         userName: '',
@@ -80,12 +56,12 @@ export default {
         userId: 0
       })
     };
-    const response = await fetch('http://127.0.0.1:3000/api/user/', requestOptions);
+    const response = await fetch('http://127.0.0.1:3000/api/users/', requestOptions);
     const data = await response.json();
     this.userName = data.userName;
   },
   mounted(){
-    fetch('http://127.0.0.1:3000/api/user/')
+    fetch('http://127.0.0.1:3000/api/users/')
         .then((response) => {
           return response.json();
         })
@@ -97,24 +73,24 @@ export default {
   methods: {
     changeUserState: function (newUserState) {
       this.userState = newUserState
-    }
+    },
 
-    /*async postData(url='', data= {}) {
-      const response = await fetch(url, {
+    async postData(url='') {
+        await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
-         // 'Content-Type': 'application/json'
-          'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
         },
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer', // no-referrer, *client
-        body: JSON.stringify({userName:userName, highScore:0}) // body data type must match "Content-Type" header
+        body: JSON.stringify({userName:this.formData.userName, highScore:0}) // body data type must match "Content-Type" header
       });
-      return response.json(); // parses JSON response into native JavaScript objects
-    }*/
+      //return response.json();
+      location.reload();
+    }
   },
   components: {
     HelloWorld
